@@ -66,9 +66,9 @@ PS.init = function( system, options ) {
 	// default dimensions (8 x 8).
 	// Uncomment the following code line and change
 	// the x and y parameters as needed.
-
-	PS.statusInput("Enter grid x: ", enterGridX(xText));
+	gridX = 8;
 	gridY = 8;
+
 	PS.gridSize(gridX, gridY);
 	for(let i = 0; i < gridX; i++) {
 		for(let j = 0; j < gridY; j++) {
@@ -90,14 +90,6 @@ PS.init = function( system, options ) {
 	// PS.statusText( "Game" );
 
 	// Add any other initialization code you need here.
-};
-
-PS.enterGridX = function(num) {
-	if(Number.isInteger(num)) {
-		gridX = num;
-	} else {
-		gridX = 8;
-	}
 };
 
 /*
