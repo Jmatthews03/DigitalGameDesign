@@ -73,7 +73,7 @@ PS.init = function( system, options ) {
 	PS.gridSize(gridX, gridY);
 	for(let i = 0; i < gridX; i++) {
 		for(let j = 0; j < gridY; j++) {
-			if(PS.random(6) == 1) {
+			if(PS.random(2) == 1) {
 				PS.color(i, j, 255, 0, 0);
 			} else {
 				PS.color(i, j, PS.COLOR_WHITE);
@@ -81,8 +81,6 @@ PS.init = function( system, options ) {
 		}
 	}
 	PS.gridColor(PS.COLOR_WHITE);
-
-	PS.statusText("Fill in the grid");
 
 	// This is also a good place to display
 	// your game title or a welcome message
