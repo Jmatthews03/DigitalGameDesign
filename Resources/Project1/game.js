@@ -67,7 +67,7 @@ PS.init = function( system, options ) {
 	// Uncomment the following code line and change
 	// the x and y parameters as needed.
 
-	gridX = 8;
+	PS.statusInput("Enter grid x: ", enterGridX(xText));
 	gridY = 8;
 	PS.gridSize(gridX, gridY);
 	for(let i = 0; i < gridX; i++) {
@@ -90,6 +90,14 @@ PS.init = function( system, options ) {
 	// PS.statusText( "Game" );
 
 	// Add any other initialization code you need here.
+};
+
+PS.enterGridX = function(num) {
+	if(Number.isInteger(num)) {
+		gridX = num;
+	} else {
+		gridX = 8;
+	}
 };
 
 /*
