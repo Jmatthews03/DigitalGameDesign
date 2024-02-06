@@ -112,7 +112,7 @@ PS.init = function( system, options ) {
 //Load the first level of the puzzle
 function loadLevel1() {
 	//Displays Instructions
-	PS.statusText("Click to rotate arrows, hit space to check");
+	PS.statusText("Click arrows to form a path (space to check)");
 
 	//Sets grid size
 	gridX = 7;
