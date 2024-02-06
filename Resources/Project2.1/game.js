@@ -94,7 +94,7 @@ PS.init = function( system, options ) {
 	// Uncomment the following code line and change
 	// the x and y parameters as needed.
 
-	loadLevel1();
+	loadLevel2();
 
 	// This is also a good place to display
 	// your game title or a welcome message
@@ -112,7 +112,7 @@ PS.init = function( system, options ) {
 //Load the first level of the puzzle
 function loadLevel1() {
 	//Displays Instructions
-	PS.statusText("Click arrows to rotate, space to check");
+	PS.statusText("Click arrows to form a path (space to check)");
 
 	//Sets grid size
 	gridX = 7;
@@ -133,6 +133,35 @@ function loadLevel1() {
 	//Load other arrows
 	PS.glyph(4, 0, PS.random(4) + 8591);
 	PS.glyph(4, 3, PS.random(4) + 8591);
+}
+
+
+
+function loadLevel2() {
+	//Sets grid size
+	gridX = 5;
+	gridY = 4;
+	PS.gridSize(gridX, gridY);
+
+	//Load start
+	startX = 0;
+	startY = 1;
+	PS.glyph(startX, startY, PS.random(4) + 8591);
+	PS.color(startX, startY, PS.COLOR_BLUE);
+
+	//Load end
+	endX = 4;
+	endY = 2;
+	PS.color(endX, endY, PS.COLOR_GREEN);
+
+	//Load other arrows
+	PS.glyph(2, 1, PS.random(4) + 8591);
+	PS.glyph(2, 0, PS.random(4) + 8591);
+	PS.glyph(1, 0, PS.random(4) + 8591);
+	PS.glyph(3, 0, PS.random(4) + 8591);
+	PS.glyph(1, 2, PS.random(4) + 8591);
+	PS.glyph(3, 3, PS.random(4) + 8591);
+	PS.glyph(1, 3, PS.random(4) + 8591);
 }
 
 
