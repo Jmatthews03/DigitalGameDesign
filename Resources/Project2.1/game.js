@@ -139,29 +139,32 @@ function loadLevel1() {
 
 function loadLevel2() {
 	//Sets grid size
-	gridX = 5;
-	gridY = 4;
+	gridX = 6;
+	gridY = 5;
 	PS.gridSize(gridX, gridY);
 
 	//Load start
-	startX = 0;
+	startX = 1;
 	startY = 1;
 	PS.glyph(startX, startY, PS.random(4) + 8591);
 	PS.color(startX, startY, PS.COLOR_BLUE);
 
 	//Load end
-	endX = 4;
+	endX = 5;
 	endY = 2;
 	PS.color(endX, endY, PS.COLOR_GREEN);
 
 	//Load other arrows
-	PS.glyph(2, 1, PS.random(4) + 8591);
-	PS.glyph(2, 0, PS.random(4) + 8591);
-	PS.glyph(1, 0, PS.random(4) + 8591);
+	PS.glyph(3, 1, PS.random(4) + 8591);
 	PS.glyph(3, 0, PS.random(4) + 8591);
-	PS.glyph(1, 2, PS.random(4) + 8591);
-	PS.glyph(3, 3, PS.random(4) + 8591);
-	PS.glyph(1, 3, PS.random(4) + 8591);
+	PS.glyph(2, 0, PS.random(4) + 8591);
+	PS.glyph(4, 0, PS.random(4) + 8591);
+	PS.glyph(2, 2, PS.random(4) + 8591);
+	PS.glyph(4, 3, PS.random(4) + 8591);
+	PS.glyph(2, 3, PS.random(4) + 8591);
+	PS.glyph(0, 2, PS.random(4) + 8591);
+	PS.glyph(0, 4, PS.random(4) + 8591);
+	PS.glyph(5, 4, PS.random(4) + 8591);
 }
 
 
