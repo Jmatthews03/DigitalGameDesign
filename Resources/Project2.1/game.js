@@ -67,7 +67,9 @@ let currentY;
 let nextX;
 let nextY;
 
-
+let won = false;
+let checked = false;
+let level = 1;
 
 /*
 PS.init( system, options )
@@ -94,7 +96,7 @@ PS.init = function( system, options ) {
 	// Uncomment the following code line and change
 	// the x and y parameters as needed.
 
-	loadLevel2();
+	loadNextLevel();
 
 	// This is also a good place to display
 	// your game title or a welcome message
@@ -109,14 +111,50 @@ PS.init = function( system, options ) {
 
 
 
+//Loads whatever the next level of the puzzle is
+function loadNextLevel() {
+	if(level == 1) {
+		loadLevel1();
+	} 
+	else if(level == 2) {
+		loadLevel2();
+	}
+	else if(level == 3) {
+		loadLevel3();
+	}
+	else if(level == 4) {
+		loadLevel4();
+	}
+};
+
+
+
+//Displays the text for the appropriate level
+function displayLevelText() {
+	if(level == 1) {
+		PS.statusText("Click arrows to form a path (Space to check)");
+	}
+	else if(level == 2) {
+		PS.statusText("The line can not cross itself");
+	}
+	else if(level == 3) {
+		PS.statusText("Test Level");
+	}
+	else if(level == 4) {
+		PS.statusText("Thanks For Playing!");
+	}
+};
+
+
+
 //Load the first level of the puzzle
 function loadLevel1() {
-	//Displays Instructions
-	PS.statusText("Click arrows to form a path (space to check)");
+	//Displays instructions
+	displayLevelText();
 
 	//Sets grid size
-	gridX = 7;
-	gridY = 4;
+	gridX = 5;
+	gridY = 5;
 	PS.gridSize(gridX, gridY);
 
 	//Load start
@@ -126,20 +164,25 @@ function loadLevel1() {
 	PS.color(startX, startY, PS.COLOR_BLUE);
 
 	//Load end
-	endX = 6;
-	endY = 3;
+	endX = 4;
+	endY = 4;
 	PS.color(endX, endY, PS.COLOR_GREEN);
 
 	//Load other arrows
-	PS.glyph(4, 0, PS.random(4) + 8591);
-	PS.glyph(4, 3, PS.random(4) + 8591);
+	PS.glyph(3, 0, PS.random(4) + 8591);
+	PS.glyph(3, 2, PS.random(4) + 8591);
+	PS.glyph(1, 2, PS.random(4) + 8591);
+	PS.glyph(1, 4, PS.random(4) + 8591);
 }
 
 
-
+//Load the second level of the puzzle
 function loadLevel2() {
+	//Displays instructions
+	displayLevelText();
+
 	//Sets grid size
-	gridX = 6;
+	gridX = 7;
 	gridY = 5;
 	PS.gridSize(gridX, gridY);
 
@@ -165,7 +208,51 @@ function loadLevel2() {
 	PS.glyph(0, 2, PS.random(4) + 8591);
 	PS.glyph(0, 4, PS.random(4) + 8591);
 	PS.glyph(5, 4, PS.random(4) + 8591);
+	PS.glyph(6, 0, PS.random(4) + 8591);
+	PS.glyph(6, 1, PS.random(4) + 8591);
 }
+
+
+
+//Loads level 3 of the puzzle
+function loadLevel3() {
+	//Displays instructions
+	displayLevelText();
+
+	//Sets grid size
+	gridX = 3;
+	gridY = 3;
+	PS.gridSize(gridX, gridY);
+
+	//Load start
+	startX = 0;
+	startY = 0;
+	PS.glyph(startX, startY, PS.random(4) + 8591);
+	PS.color(startX, startY, PS.COLOR_BLUE);
+
+	//Load end
+	endX = 2;
+	endY = 0;
+	PS.color(endX, endY, PS.COLOR_GREEN);
+
+	//Load other arrows
+	PS.glyph(1, 0, PS.random(4) + 8591);
+};
+
+
+
+//Load an end screen
+function loadLevel4() {
+	//Displays text
+	displayLevelText();
+
+	//Sets grid size
+	gridX = 5;
+	gridY = 5;
+	PS.gridSize(gridX, gridY);
+
+	PS.color(PS.ALL, PS.ALL, PS.COLOR_YELLOW);
+};
 
 
 
@@ -276,7 +363,7 @@ This function doesn't have to do anything. Any value returned is ignored.
 [options : Object] = A JavaScript object with optional data properties; see API documentation for details.
 */
 PS.keyDown = function( key, shift, ctrl, options ) {
-	if(key == PS.KEY_SPACE) {
+	if(!checked && key == PS.KEY_SPACE && level != 4) {
 		//0 is left, going clockwise from there
 		direction = PS.glyph(startX, startY) % 8592;
 
@@ -284,9 +371,6 @@ PS.keyDown = function( key, shift, ctrl, options ) {
 		currentX = startX;
 		currentY = startY;
 		nextStep();
-
-		//Sets a tracker for winning
-		let won = false;
 
 		//Loops while the next space in the line is in grid bounds
 		while(nextX >= 0 && nextX < gridX && nextY >= 0 && nextY < gridY) {
@@ -315,15 +399,27 @@ PS.keyDown = function( key, shift, ctrl, options ) {
 			nextStep();
 		}
 
-		//Checks to see if the loop exited because you won or because you hit a wall
+		checked = true;
+
 		if(won) {
-			PS.statusText("You got it!");
+			PS.statusText("You got it! (Space to confirm)");
+		} else {
+			PS.statusText("Not quite (Space to confirm)");
+		}
+	} else if(level != 4) {
+		//Checks to see if the loop stopped because you won or because you hit a wall
+		if(won) {
+			won = false;
+			level++;
+			loadNextLevel();
 		} else {
 			//Resets all the colors back to start
+			displayLevelText();
 			PS.color(PS.ALL, PS.ALL, PS.DEFAULT);
 			PS.color(startX, startY, PS.COLOR_BLUE);
 			PS.color(endX, endY, PS.COLOR_GREEN);
 		}
+		checked = false;
 	}
 };
 
