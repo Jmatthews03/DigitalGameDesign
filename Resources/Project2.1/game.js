@@ -132,13 +132,13 @@ function loadNextLevel() {
 //Displays the text for the appropriate level
 function displayLevelText() {
 	if(level == 1) {
-		PS.statusText("Click arrows to form a path (Space to check)");
+		PS.statusText("Click arrows to form a path (Space to check).");
 	}
 	else if(level == 2) {
-		PS.statusText("The line can not cross itself");
+		PS.statusText("The line can not cross itself.");
 	}
 	else if(level == 3) {
-		PS.statusText("Test Level");
+		PS.statusText("Now try this one, good luck!");
 	}
 	else if(level == 4) {
 		PS.statusText("Thanks For Playing!");
@@ -220,23 +220,45 @@ function loadLevel3() {
 	displayLevelText();
 
 	//Sets grid size
-	gridX = 3;
-	gridY = 3;
+	gridX = 11;
+	gridY = 11;
 	PS.gridSize(gridX, gridY);
 
 	//Load start
-	startX = 0;
-	startY = 0;
+	startX = 3;
+	startY = 3;
 	PS.glyph(startX, startY, PS.random(4) + 8591);
 	PS.color(startX, startY, PS.COLOR_BLUE);
 
 	//Load end
-	endX = 2;
-	endY = 0;
+	endX = 7;
+	endY = 6;
 	PS.color(endX, endY, PS.COLOR_GREEN);
 
 	//Load other arrows
-	PS.glyph(1, 0, PS.random(4) + 8591);
+	PS.glyph(3, 9, PS.random(4) + 8591);
+	PS.glyph(10, 3, PS.random(4) + 8591);
+	PS.glyph(1, 3, PS.random(4) + 8591);
+	PS.glyph(3, 9, PS.random(4) + 8591);
+	PS.glyph(1, 8, PS.random(4) + 8591);
+	PS.glyph(8, 8, PS.random(4) + 8591);
+	PS.glyph(2, 0, PS.random(4) + 8591);
+	PS.glyph(5, 6, PS.random(4) + 8591);
+	PS.glyph(4, 10, PS.random(4) + 8591);
+	PS.glyph(10, 5, PS.random(4) + 8591);
+	PS.glyph(2 , 5, PS.random(4) + 8591);
+	PS.glyph(8, 0, PS.random(4) + 8591);
+	PS.glyph(2, 2, PS.random(4) + 8591);
+	PS.glyph(0, 9, PS.random(4) + 8591);
+	PS.glyph(0, 0, PS.random(4) + 8591);
+	PS.glyph(9, 2, PS.random(4) + 8591);
+	PS.glyph(9, 10, PS.random(4) + 8591);
+	PS.glyph(4, 4, PS.random(4) + 8591);
+	PS.glyph(7, 4, PS.random(4) + 8591);
+	PS.glyph(5, 1, PS.random(4) + 8591);
+	PS.glyph(5, 7, PS.random(4) + 8591);
+	PS.glyph(6, 2, PS.random(4) + 8591);
+	PS.glyph(6, 7, PS.random(4) + 8591);
 };
 
 
@@ -247,8 +269,8 @@ function loadLevel4() {
 	displayLevelText();
 
 	//Sets grid size
-	gridX = 5;
-	gridY = 5;
+	gridX = 15;
+	gridY = 15
 	PS.gridSize(gridX, gridY);
 
 	PS.color(PS.ALL, PS.ALL, PS.COLOR_YELLOW);
