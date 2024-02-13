@@ -72,48 +72,56 @@ Any value returned is ignored.
 [options : Object] = A JavaScript object with optional data properties; see API documentation for details.
 */
 PS.init = function( system, options ) {
-	// Uncomment the following code line
-	// to verify operation:
+	//Initial variables
+	locked = false;
+	dialogueLine = 0;
+	roomNum = 0;
 
-	// PS.debug( "PS.init() called\n" );
-
-	// This function should normally begin
-	// with a call to PS.gridSize( x, y )
-	// where x and y are the desired initial
-	// dimensions of the grid.
-	// Call PS.gridSize() FIRST to avoid problems!
-	// The sample call below sets the grid to the
-	// default dimensions (8 x 8).
-	// Uncomment the following code line and change
-	// the x and y parameters as needed.
-
-	gridX = 6;
-	gridY = 32;
-	PS.gridSize(gridX, gridY);
-	PS.border(PS.ALL, PS.ALL, 0);
-	PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
-	
-	roomNum = 1;
-
+	//Player initialization
 	player = PS.spriteSolid(2, 2);
 	PS.spritePlane(player, 2);
 
-	playerX = 2;
-	playerY = 29;
-	PS.spriteMove(player, playerX, playerY);
+	//Starting grid settings
+	gridX = 15;
+	gridY = 6;
+	PS.gridSize(gridX, gridY);
+	PS.gridColor(PS.COLOR_GRAY_DARK);
+	PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
+	//PS.border(PS.ALL, PS.ALL, 0);
 
-	locked = false;
-	dialogueLine = 0;
+	//Displays the start screen
+	PS.glyph(1, 1, "T");
+	PS.glyph(2, 1, "H");
+	PS.glyph(3, 1, "E");
+	PS.glyph(5, 1, "C");
+	PS.glyph(6, 1, "O");
+	PS.glyph(7, 1, "R");
+	PS.glyph(8, 1, "R");
+	PS.glyph(9, 1, "I");
+	PS.glyph(10, 1, "D");
+	PS.glyph(11, 1, "O");
+	PS.glyph(12, 1, "R");
 
-	// This is also a good place to display
-	// your game title or a welcome message
-	// in the status line above the grid.
-	// Uncomment the following code line and
-	// change the string parameter as needed.
+	PS.glyph(2, 3, "P");
+	PS.glyph(3, 3, "r");
+	PS.glyph(4, 3, "e");
+	PS.glyph(5, 3, "s");
+	PS.glyph(6, 3, "s");
+	PS.glyph(8, 3, "S");
+	PS.glyph(9, 3, "p");
+	PS.glyph(10, 3, "a");
+	PS.glyph(11, 3, "c");
+	PS.glyph(12, 3, "e");
+	PS.glyphColor(PS.ALL, 3, PS.COLOR_GRAY_DARK);
 
-	// PS.statusText( "Game" );
-
-	// Add any other initialization code you need here.
+	PS.glyph(3, 4, "T");
+	PS.glyph(4, 4, "o");
+	PS.glyph(6, 4, "S");
+	PS.glyph(7, 4, "t");
+	PS.glyph(8, 4, "a");
+	PS.glyph(9, 4, "r");
+	PS.glyph(10, 4, "t");
+	PS.glyphColor(PS.ALL, 4, PS.COLOR_GRAY_DARK);
 };
 
 
@@ -226,6 +234,9 @@ PS.keyDown = function( key, shift, ctrl, options ) {
 		if(locked) {
 			dialogueSequencer();
 		}
+		else if(roomNum == 0) {
+			nextRoom();
+		}
 	}
 	else if(!locked && key == PS.KEY_ARROW_UP)
 	{
@@ -249,16 +260,75 @@ PS.keyDown = function( key, shift, ctrl, options ) {
 function nextRoom() {
 	roomNum += 1;
 
-
-	PS.spriteMove(player, 2, 30);
 	playerX = 2;
 	playerY = 30;
+	PS.spriteMove(player, playerX, playerY);
 
-
-	if(roomNum == 2) {
+	if(roomNum == 1) {
+		gridX = 6;
+		gridY = 32;
+		PS.gridSize(gridX, gridY);
+		PS.gridColor(PS.COLOR_GRAY_DARK);
+		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
+		PS.border(PS.ALL, PS.ALL, 0);
+		playerY = 29;
+		PS.spriteMove(player, playerX, playerY);
+		PS.statusColor(PS.COLOR_WHITE);
+		PS.statusText("(Arrows keys to move)");
+	}
+	else if(roomNum == 2) {
 		tempSprite = PS.spriteSolid(2, 2);
+		PS.spriteSolidColor(tempSprite, PS.COLOR_ORANGE);
 		PS.spritePlane(tempSprite, 2);
 		PS.spriteMove(tempSprite, 2, 1);
+		dialogueSequencer();
+	}
+	else if(roomNum == 3) {
+		PS.color(1, 0, PS.COLOR_RED);
+		PS.color(4, 1, PS.COLOR_RED);
+		PS.color(2, 3, PS.COLOR_RED);
+		PS.color(3, 6, PS.COLOR_RED);
+	}
+	else if(roomNum == 4) {
+		PS.color(4, 0, PS.COLOR_RED);
+		PS.color(2, 4, PS.COLOR_RED);
+		PS.color(3, 7, PS.COLOR_RED);
+		PS.color(3, 8, PS.COLOR_RED);
+		PS.color(3, 11, PS.COLOR_RED);
+		PS.color(3, 12, PS.COLOR_RED);
+		PS.color(2, 17, PS.COLOR_RED);
+		PS.color(2, 18, PS.COLOR_RED);
+		PS.color(2, 25, PS.COLOR_RED);
+		PS.color(2, 26, PS.COLOR_RED);
+	}
+	else if(roomNum == 5) {
+		PS.color(2, 0, PS.COLOR_RED);
+		PS.color(2, 1, PS.COLOR_RED);
+		PS.color(2, 2, PS.COLOR_RED);
+		PS.color(3, 0, PS.COLOR_RED);
+		PS.color(3, 1, PS.COLOR_RED);
+		PS.color(3, 13, PS.COLOR_RED);
+		PS.color(2, 9, PS.COLOR_RED);
+		PS.color(2, 10, PS.COLOR_RED);
+		PS.color(2, 11, PS.COLOR_RED);
+		PS.color(2, 13, PS.COLOR_RED);
+		PS.color(3, 14, PS.COLOR_RED);
+		PS.color(2, 16, PS.COLOR_RED);
+		PS.color(2, 19, PS.COLOR_RED);
+		PS.color(3, 18, PS.COLOR_RED);
+		PS.color(3, 19, PS.COLOR_RED);
+		PS.color(3, 20, PS.COLOR_RED);
+		PS.color(3, 21, PS.COLOR_RED);
+		PS.color(3, 22, PS.COLOR_RED);
+		PS.color(3, 23, PS.COLOR_RED);
+		PS.color(2, 27, PS.COLOR_RED);
+	}
+	else if(roomNum == 6) {
+		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
+		tempSprite = PS.spriteSolid(1, 1);
+		PS.spriteSolidColor(tempSprite, PS.COLOR_GREEN);
+		PS.spritePlane(tempSprite, 2);
+		PS.spriteMove(tempSprite, 3, 4);
 		dialogueSequencer();
 	}
 }
@@ -267,16 +337,46 @@ function nextRoom() {
 function dialogueSequencer() {
 	locked = true;
 
+	
+
 	if(roomNum == 2) {
+		PS.audioPlay("fx_click");
 		if(dialogueLine == 0) {
-			PS.statusText("Hello");
+			PS.statusColor(PS.COLOR_ORANGE);
+			PS.statusText("Hello there... (Space to cont. dialogue)");
 			dialogueLine += 1;
 		}
 		else if(dialogueLine == 1) {
-			PS.statusText("Second line");
+			PS.statusText("I am here to warn you...");
 			dialogueLine += 1;
 		}
 		else if(dialogueLine == 2) {
+			PS.statusText("You need to be careful of...");
+			dialogueLine += 1;
+		}
+		else if(dialogueLine == 3) {
+			PS.statusColor(PS.COLOR_RED);
+			PS.statusText("*Screams and dies*");
+			dialogueLine += 1;
+			PS.audioPlay("fx_blast1");
+			PS.audioPlay("fx_wilhelm");
+			PS.spriteSolidColor(tempSprite, PS.COLOR_RED);
+		}
+		else if(dialogueLine == 4) {
+			PS.statusText("");
+			dialogueLine = 0;
+			locked = false;
+			PS.spriteDelete(tempSprite);
+		}
+	}
+	else if(roomNum == 6) {
+		PS.audioPlay("fx_squawk");
+		if(dialogueLine == 0) {
+			PS.statusColor(PS.COLOR_GREEN);
+			PS.statusText("*quack*");
+			dialogueLine += 1;
+		}
+		else if(dialogueLine == 1) {
 			PS.statusText("");
 			dialogueLine = 0;
 			locked = false;
