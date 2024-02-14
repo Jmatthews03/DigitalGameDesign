@@ -275,7 +275,8 @@ function nextRoom() {
 		PS.spriteMove(player, playerX, playerY);
 		PS.statusColor(PS.COLOR_WHITE);
 		PS.statusText("(Arrows keys to move)");
-		PS.audioPlay("caramelldansen");
+		
+		//PS.audioPlay("caramelldansen");
 	}
 	else if(roomNum == 2) {
 		tempSprite = PS.spriteSolid(2, 2);
