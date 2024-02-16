@@ -849,11 +849,69 @@ function dialogueSequencer() {
 	else if(roomNum == 50) {
 		if(dialogueLine == 0) {
 			dialogueLine += 1;
-			PS.statusText("Party test text");
+			PS.statusColor(PS.COLOR_ORANGE);
+			PS.statusText("Oh, you finally made it to the party");
+			PS.audioPlay("fx_click");
 
 		}
 		else if(dialogueLine == 1) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_MAGENTA);
+			PS.statusText("Yes, you're finally here");
+			PS.audioPlay("fx_jump2");
+
+		}
+		else if(dialogueLine == 2) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_GREEN);
+			PS.statusText("*quack* Hi!");
+			PS.audioPlay("fx_squawk");
+
+		}
+		else if(dialogueLine == 3) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLACK);
+			PS.statusText("But I thought you two were dead");
+			PS.audioPlay("fx_click");
+
+		}
+		else if(dialogueLine == 4) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_ORANGE);
+			PS.statusText("People who die just show up here");
+			PS.audioPlay("fx_click");
+
+		}
+		else if(dialogueLine == 5) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLACK);
+			PS.statusText("Well that seems like a copout");
+			PS.audioPlay("fx_click");
+
+		}
+		else if(dialogueLine == 6) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_ORANGE);
+			PS.statusText("Yeah don't think about it too much");
+			PS.audioPlay("fx_click");
+
+		}
+		else if(dialogueLine == 7) {
+			dialogueLine += 1;
+			PS.statusText("But anyway, let's get into the party");
+			PS.audioPlay("fx_click");
+
+		}
+		else if(dialogueLine == 8) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_WHITE);
+			PS.statusText("(And then they danced the night away)");
+			PS.audioPlay("fx_click");
+
+		}
+		else if(dialogueLine == 9) {
 			roomNum = 98;
+			PS.spriteDelete(player);
 			nextRoom();
 		}
 	}
