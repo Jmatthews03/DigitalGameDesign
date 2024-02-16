@@ -62,6 +62,8 @@ let roomNum;
 let tempSprite;
 let dialogueLine;
 
+let spellbook;
+
 /*
 PS.init( system, options )
 Called once after engine is initialized but before event-polling begins.
@@ -76,10 +78,12 @@ PS.init = function( system, options ) {
 	locked = false;
 	dialogueLine = 0;
 	roomNum = 0;
+	spellbook = false;
 
 	//Player initialization
 	player = PS.spriteSolid(2, 2);
 	PS.spritePlane(player, 2);
+	PS.spriteCollide(player, playerCollision);
 
 	//Starting grid settings
 	gridX = 15;
@@ -253,6 +257,14 @@ PS.keyDown = function( key, shift, ctrl, options ) {
 		playerY = playerY + 1;
 		PS.spriteMove(player, playerX, playerY);
 	}
+	else if(!locked && key == PS.KEY_ARROW_LEFT && playerX > 0) {
+		playerX = playerX - 1;
+		PS.spriteMove(player, playerX, playerY);
+	}
+	else if(!locked && key == PS.KEY_ARROW_RIGHT && playerX < gridX - 2) {
+		playerX = playerX + 1;
+		PS.spriteMove(player, playerX, playerY);
+	}
 };
 
 
@@ -260,9 +272,7 @@ PS.keyDown = function( key, shift, ctrl, options ) {
 function nextRoom() {
 	roomNum += 1;
 
-	playerX = 2;
-	playerY = 30;
-	PS.spriteMove(player, playerX, playerY);
+	PS.audioPlay("fx_click");
 
 	if(roomNum == 1) {
 		gridX = 6;
@@ -271,14 +281,18 @@ function nextRoom() {
 		PS.gridColor(PS.COLOR_GRAY_DARK);
 		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
 		PS.border(PS.ALL, PS.ALL, 0);
+
+		playerX = 2;
 		playerY = 29;
 		PS.spriteMove(player, playerX, playerY);
 		PS.statusColor(PS.COLOR_WHITE);
 		PS.statusText("(Arrows keys to move)");
-		
-		//PS.audioPlay("caramelldansen");
 	}
 	else if(roomNum == 2) {
+		playerX = 2;
+		playerY = 30;
+		PS.spriteMove(player, playerX, playerY);
+
 		tempSprite = PS.spriteSolid(2, 2);
 		PS.spriteSolidColor(tempSprite, PS.COLOR_ORANGE);
 		PS.spritePlane(tempSprite, 2);
@@ -286,12 +300,20 @@ function nextRoom() {
 		dialogueSequencer();
 	}
 	else if(roomNum == 3) {
+		playerX = 2;
+		playerY = 30;
+		PS.spriteMove(player, playerX, playerY);
+
 		PS.color(1, 0, PS.COLOR_RED);
 		PS.color(4, 1, PS.COLOR_RED);
 		PS.color(2, 3, PS.COLOR_RED);
 		PS.color(3, 6, PS.COLOR_RED);
 	}
 	else if(roomNum == 4) {
+		playerX = 2;
+		playerY = 30;
+		PS.spriteMove(player, playerX, playerY);
+
 		PS.color(4, 0, PS.COLOR_RED);
 		PS.color(2, 4, PS.COLOR_RED);
 		PS.color(3, 7, PS.COLOR_RED);
@@ -304,6 +326,10 @@ function nextRoom() {
 		PS.color(2, 26, PS.COLOR_RED);
 	}
 	else if(roomNum == 5) {
+		playerX = 2;
+		playerY = 30;
+		PS.spriteMove(player, playerX, playerY);
+
 		PS.color(2, 0, PS.COLOR_RED);
 		PS.color(2, 1, PS.COLOR_RED);
 		PS.color(2, 2, PS.COLOR_RED);
@@ -326,20 +352,218 @@ function nextRoom() {
 		PS.color(2, 27, PS.COLOR_RED);
 	}
 	else if(roomNum == 6) {
+		gridX = 8;
+		gridY = 10;
+		PS.gridSize(gridX, gridY);
+		PS.gridColor(PS.COLOR_GRAY_DARK);
+		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
+		PS.border(PS.ALL, PS.ALL, 0);
+		
+		playerX = 3;
+		playerY = 7;
+		PS.spriteMove(player, playerX, playerY);
+
 		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
 		tempSprite = PS.spriteSolid(1, 1);
 		PS.spriteSolidColor(tempSprite, PS.COLOR_GREEN);
 		PS.spritePlane(tempSprite, 2);
-		PS.spriteMove(tempSprite, 3, 4);
+		PS.spriteMove(tempSprite, 5, 4);
 		dialogueSequencer();
+	}
+	else if(roomNum == 7) {
+		gridX = 8;
+		gridY = 16;
+		PS.gridSize(gridX, gridY);
+		PS.gridColor(PS.COLOR_GRAY_DARK);
+		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
+		PS.border(PS.ALL, PS.ALL, 0);
+
+		playerX = 3;
+		playerY = 14;
+		PS.spriteMove(player, playerX, playerY);
+
+		tempSprite = PS.spriteSolid(1, 1);
+		PS.spriteSolidColor(tempSprite, PS.COLOR_MAGENTA);
+		PS.spritePlane(tempSprite, 2);
+		PS.spriteMove(tempSprite, 2, 7);
+	}
+	else if(roomNum == 8) {
+		gridX = 6;
+		gridY = 32;
+		PS.gridSize(gridX, gridY);
+		PS.gridColor(PS.COLOR_GRAY_DARK);
+		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
+		PS.border(PS.ALL, PS.ALL, 0);
+
+		playerX = 2;
+		playerY = 29;
+		PS.spriteMove(player, playerX, playerY);
+
+		if(!spellbook) {
+			PS.spriteDelete(tempSprite);
+		}
+	}
+	else if(roomNum == 9) {
+		gridX = 8;
+		gridY = 16;
+		PS.gridSize(gridX, gridY);
+		PS.gridColor(PS.COLOR_GRAY_DARK);
+		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
+		PS.border(PS.ALL, PS.ALL, 0);
+
+		playerX = 3;
+		playerY = 14;
+		PS.spriteMove(player, playerX, playerY);
+
+		tempSprite = PS.spriteSolid(2, 2);
+		PS.spriteSolidColor(tempSprite, PS.COLOR_MAGENTA);
+		PS.spritePlane(tempSprite, 2);
+		PS.spriteMove(tempSprite, 3, 4);
+
+		dialogueSequencer();
+	}
+	else if(roomNum == 10) {
+		gridX = 16;
+		gridY = 12;
+		PS.gridSize(gridX, gridY);
+		PS.gridColor(PS.COLOR_GRAY_DARK);
+		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
+		PS.border(PS.ALL, PS.ALL, 0);
+
+		playerX = 7;
+		playerY = 10;
+		PS.spriteMove(player, playerX, playerY);
+
+		PS.color(2, 0, PS.COLOR_YELLOW);
+		PS.color(2, 1, PS.COLOR_YELLOW);
+		PS.color(2, 2, PS.COLOR_YELLOW);
+		PS.color(2, 3, PS.COLOR_YELLOW);
+		PS.color(2, 4, PS.COLOR_YELLOW);
+		PS.color(5, 0, PS.COLOR_YELLOW);
+		PS.color(5, 1, PS.COLOR_YELLOW);
+		PS.color(5, 2, PS.COLOR_YELLOW);
+		PS.color(5, 3, PS.COLOR_YELLOW);
+		PS.color(5, 4, PS.COLOR_YELLOW);
+		PS.color(3, 0, PS.COLOR_RED);
+		PS.color(3, 1, PS.COLOR_RED);
+		PS.color(3, 2, PS.COLOR_RED);
+		PS.color(3, 3, PS.COLOR_RED);
+		PS.color(3, 4, PS.COLOR_RED);
+		PS.color(4, 0, PS.COLOR_RED);
+		PS.color(4, 1, PS.COLOR_RED);
+		PS.color(4, 2, PS.COLOR_RED);
+		PS.color(4, 3, PS.COLOR_RED);
+		PS.color(4, 4, PS.COLOR_RED);
+
+		PS.color(10, 0, PS.COLOR_CYAN);
+		PS.color(12, 1, PS.COLOR_CYAN);
+		PS.color(11, 4, PS.COLOR_CYAN);
+		PS.color(14, 0, PS.COLOR_VIOLET);
+		PS.color(13, 2, PS.COLOR_VIOLET);
+		PS.color(10, 1, PS.COLOR_VIOLET);
+	}
+	else if(roomNum == 11) {
+		if(playerX < 8) {
+			roomNum = 48;
+			nextRoom();
+		}
+		else {
+			roomNum = 49;
+			nextRoom();
+		}
+	}
+	else if(roomNum == 49) {
+		//Castle
+
+		gridX = 12;
+		gridY = 12;
+		PS.gridSize(gridX, gridY);
+		PS.gridColor(PS.COLOR_GRAY_DARK);
+		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
+		PS.border(PS.ALL, PS.ALL, 0);
+
+		PS.color(4, PS.ALL, PS.COLOR_YELLOW);
+		PS.color(7, PS.ALL, PS.COLOR_YELLOW);
+		PS.color(PS.ALL, 4, PS.COLOR_YELLOW);
+		PS.color(PS.ALL, 0, PS.COLOR_RED);
+		PS.color(PS.ALL, 1, PS.COLOR_RED);
+		PS.color(PS.ALL, 2, PS.COLOR_RED);
+		PS.color(PS.ALL, 3, PS.COLOR_RED);
+		PS.color(5, PS.ALL, PS.COLOR_RED);
+		PS.color(6, PS.ALL, PS.COLOR_RED);
+
+		tempSprite = PS.spriteSolid(2, 2);
+		PS.spriteSolidColor(tempSprite, PS.COLOR_INDIGO);
+		PS.spriteMove(tempSprite, 5, 1);
+
+		playerX = 5;
+		playerY = 9;
+		PS.spriteMove(player, playerX, playerY);
+
+		dialogueSequencer();
+	}
+	else if(roomNum == 50) {
+		//Party
+
+		gridX = 12;
+		gridY = 12;
+		PS.gridSize(gridX, gridY);
+		PS.gridColor(PS.COLOR_GRAY_DARK);
+		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
+		PS.border(PS.ALL, PS.ALL, 0);
+
+		PS.color(4, 5, PS.COLOR_BLUE);
+		PS.color(5, 5, PS.COLOR_BLUE);
+		PS.color(6, 5, PS.COLOR_BLUE);
+		PS.color(7, 5, PS.COLOR_BLUE);
+		PS.color(4, 6, PS.COLOR_BLUE);
+		PS.color(5, 6, PS.COLOR_BLUE);
+		PS.color(6, 6, PS.COLOR_BLUE);
+		PS.color(7, 6, PS.COLOR_BLUE);
+
+		PS.color(1, 3, PS.COLOR_ORANGE);
+		PS.color(2, 3, PS.COLOR_ORANGE);
+		PS.color(1, 4, PS.COLOR_ORANGE);
+		PS.color(2, 4, PS.COLOR_ORANGE);
+
+		PS.color(5, 2, PS.COLOR_MAGENTA);
+		PS.color(6, 2, PS.COLOR_MAGENTA);
+		PS.color(5, 3, PS.COLOR_MAGENTA);
+		PS.color(6, 3, PS.COLOR_MAGENTA);
+		
+		PS.color(9, 4, PS.COLOR_GREEN);
+
+		playerX = 5;
+		playerY = 9;
+		PS.spriteMove(player, playerX, playerY);
+
+		dialogueSequencer();
+	}
+	else if(roomNum == 98 || roomNum == 99 || roomNum == 100) {
+		gridX = 8;
+		gridY = 8;
+		PS.gridSize(gridX, gridY);
+		PS.gridColor(PS.COLOR_GRAY_DARK);
+		PS.color(PS.ALL, PS.ALL, PS.COLOR_YELLOW);
+		PS.border(PS.ALL, PS.ALL, 0);
+
+		PS.statusColor(PS.COLOR_WHITE);
+		if(roomNum == 98) {
+			PS.statusText("Thanks for playing! (Ending 1/3)");
+		}
+		if(roomNum == 99) {
+			PS.statusText("Thanks for playing! (Ending 2/3)");
+		}
+		if(roomNum == 100) {
+			PS.statusText("Thanks for playing! (Ending 3/3)");
+		}
+		PS.audioPlay("fx_tada");
 	}
 }
 
 //Moves the dialogue to the next line
 function dialogueSequencer() {
 	locked = true;
-
-	
 
 	if(roomNum == 2) {
 		PS.audioPlay("fx_click");
@@ -372,21 +596,274 @@ function dialogueSequencer() {
 		}
 	}
 	else if(roomNum == 6) {
-		PS.audioPlay("fx_squawk");
 		if(dialogueLine == 0) {
-			PS.statusColor(PS.COLOR_GREEN);
-			PS.statusText("*quack*");
 			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_GREEN);
+			PS.audioPlay("fx_squawk");
+			PS.statusText("*quack* (HI!)");
 		}
 		else if(dialogueLine == 1) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLACK);
+			PS.audioPlay("fx_click");
+			PS.statusText("Did you kill that guy?");
+		}
+		else if(dialogueLine == 2) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_GREEN);
+			PS.audioPlay("fx_squawk");
+			PS.statusText("*quack* (No, not me)");
+		}
+		else if(dialogueLine == 3) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLACK);
+			PS.audioPlay("fx_click");
+			PS.statusText("Then what was with that blood?");
+		}
+		else if(dialogueLine == 4) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_GREEN);
+			PS.audioPlay("fx_squawk");
+			PS.statusText("*quack* (Ketchup)");
+		}
+		else if(dialogueLine == 5) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_squawk");
+			PS.statusText("*quack* (Messy lunch)");
+		}
+		else if(dialogueLine == 6) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLACK);
+			PS.audioPlay("fx_click");
+			PS.statusText("I see...");
+		}
+		else if(dialogueLine == 7) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_GREEN);
+			PS.audioPlay("fx_squawk");
+			PS.statusText("*quack* (Bye!)");
+		}
+		else if(dialogueLine == 8) {
+			PS.audioPlay("fx_swoosh");
 			PS.statusText("");
 			dialogueLine = 0;
 			locked = false;
 			PS.spriteDelete(tempSprite);
 		}
 	}
+	else if(roomNum == 7) {
+		if(dialogueLine == 0) {
+			PS.audioPlay("fx_click");
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_WHITE);
+			PS.statusText("(There's a book on the ground)");
+		}
+		else if(dialogueLine == 1) {
+			PS.audioPlay("fx_click");
+			dialogueLine += 1;
+			PS.statusText("(It's full of a bunch of spells)");
+		}
+		else if(dialogueLine == 2) {
+			PS.audioPlay("fx_tada");
+			dialogueLine += 1;
+			PS.statusText("*You pick up the spellbook*");
+			spellbook = true;
+		}
+		else if(dialogueLine == 3) {
+			PS.statusText("");
+			PS.audioPlay("fx_click");
+			dialogueLine = 0;
+			locked = false;
+			PS.spriteDelete(tempSprite);
+		}
+	}
+	else if(roomNum == 9) {
+		if(dialogueLine == 0) {
+			PS.audioPlay("fx_jump2");
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_MAGENTA);
+			PS.statusText("Nyehehe");
+		}
+		else if(dialogueLine == 1) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_jump2");
+			PS.statusText("I'm the wicked witch of this hallway");
+		}
+		else if(dialogueLine == 2) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_jump2");
+			PS.statusText("And I cannot let you pass");
+		}
+		else if(dialogueLine == 3) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLACK);
+			PS.audioPlay("fx_click");
+			PS.statusText("And why is that?");
+		}
+		else if(dialogueLine == 4) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_MAGENTA);
+			PS.audioPlay("fx_jump2");
+			PS.statusText("Uh... I don't know really");
+		}
+		else if(dialogueLine == 5) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_jump2");
+			PS.statusText("Just don't feel like it I guess");
+		}
+		else if(dialogueLine == 6) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_jump2");
+			PS.statusText("Now... die!");
+		}
+		else if(dialogueLine == 7 && !spellbook) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_pop");
+			PS.statusColor(PS.COLOR_RED);
+			PS.spriteSolidColor(player, PS.COLOR_RED);
+			PS.statusText("*Literally erases you from existence*");
+			PS.spriteDelete(player);
+		}
+		else if(dialogueLine == 8 && !spellbook) {
+			PS.statusText("");
+			dialogueLine = 0;
+			roomNum = 99;
+			nextRoom();
+		}
+		else if(dialogueLine == 7) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLACK);
+			PS.statusText("Nuh uh");
+			PS.audioPlay("fx_click");
+		}
+		else if(dialogueLine == 8) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_MAGENTA);
+			PS.statusText("What do you mean \"Nuh uh\"");
+			PS.audioPlay("fx_jump2");
+		}
+		else if(dialogueLine == 9) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLACK);
+			PS.statusText("I mean... I got a spellbook too");
+			PS.audioPlay("fx_click");
+		}
+		else if(dialogueLine == 10) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_MAGENTA);
+			PS.statusText("What?! How?!");
+			PS.audioPlay("fx_jump2");
+		}
+		else if(dialogueLine == 11) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLACK);
+			PS.statusText("Just found it back there");
+			PS.audioPlay("fx_click");
+		}
+		else if(dialogueLine == 12) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_MAGENTA);
+			PS.statusText("That useless duck...");
+			PS.audioPlay("fx_jump2");
+		}
+		else if(dialogueLine == 13) {
+			dialogueLine += 1;
+			PS.statusText("Always leaving my stuff around...");
+			PS.audioPlay("fx_jump2");
+		}
+		else if(dialogueLine == 14) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLACK);
+			PS.statusText("Now... you die!");
+			PS.audioPlay("fx_click");
+		}
+		else if(dialogueLine == 15) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_RED);
+			PS.statusText("*You cast super mega kill her*");
+			PS.audioPlay("fx_shoot5");
+			PS.audioPlay("fx_wilhelm");
+			PS.spriteSolidColor(tempSprite, PS.COLOR_RED);
+		}
+		else if(dialogueLine == 16) {
+			PS.statusText("");
+			PS.audioPlay("fx_click");
+			dialogueLine = 0;
+			locked = false;
+			PS.spriteDelete(tempSprite);
+		}
+		
+	}
+	else if(roomNum == 49) {
+		if(dialogueLine == 0) {
+			dialogueLine += 1;
+			PS.statusColor(PS.COLOR_BLUE);
+			PS.audioPlay("fx_squink");
+			PS.statusText("I am the king of this underground!");
+		}
+		else if(dialogueLine == 1) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_squink");
+			PS.statusText("I see you have defeated the witch");
+		}
+		else if(dialogueLine == 2) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_squink");
+			PS.statusText("Thank for that, she was really annoying");
+		}
+		else if(dialogueLine == 3) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_squink");
+			PS.statusText("But I'm afraid I can not let you go");
+		}
+		else if(dialogueLine == 4) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_squink");
+			PS.statusText("You are too powerful with that spellbook");
+		}
+		else if(dialogueLine == 5) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_squink");
+			PS.statusText("So you must be removed");
+		}
+		else if(dialogueLine == 6) {
+			dialogueLine += 1;
+			PS.audioPlay("fx_squink");
+			PS.statusText("Goodbye");
+		}
+		else if(dialogueLine == 7) {
+			PS.statusColor(PS.COLOR_RED);
+			dialogueLine += 1;
+			PS.audioPlay("fx_blast4");
+			PS.statusText("*Literally just actually kills you*");
+			PS.spriteSolidColor(player, PS.COLOR_ORANGE);
+			PS.audioPlay("fx_wilhelm");
+		}
+		else if(dialogueLine == 8) {
+			PS.spriteDelete(player);
+			PS.spriteDelete(tempSprite);
+			roomNum = 97;
+			nextRoom();
+		}
+	}
+	else if(roomNum == 50) {
+		if(dialogueLine == 0) {
+			dialogueLine += 1;
+			PS.statusText("Party test text");
+
+		}
+		else if(dialogueLine == 1) {
+			roomNum = 98;
+			nextRoom();
+		}
+	}
+
 }
 
+
+var playerCollision = function(s1, p1, s2, p2, type) {
+	dialogueSequencer();
+}
 
 /*
 PS.keyUp ( key, shift, ctrl, options )
