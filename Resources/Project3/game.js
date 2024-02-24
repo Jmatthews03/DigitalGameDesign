@@ -61,7 +61,7 @@ let roomNum;
 //NPC sprite and dialogue holders
 let tempSprite;
 let dialogueLine;
-
+let replay;
 let spellbook;
 
 /*
@@ -75,15 +75,11 @@ Any value returned is ignored.
 */
 PS.init = function( system, options ) {
 	//Initial variables
-	locked = false;
+	locked = true;
 	dialogueLine = 0;
 	roomNum = 0;
 	spellbook = false;
-
-	//Player initialization
-	player = PS.spriteSolid(2, 2);
-	PS.spritePlane(player, 2);
-	PS.spriteCollide(player, playerCollision);
+	replay = false;
 
 	//Starting grid settings
 	gridX = 15;
@@ -234,15 +230,7 @@ This function doesn't have to do anything. Any value returned is ignored.
 [options : Object] = A JavaScript object with optional data properties; see API documentation for details.
 */
 PS.keyDown = function( key, shift, ctrl, options ) {
-	if(key == PS.KEY_SPACE) {
-		if(locked) {
-			dialogueSequencer();
-		}
-		else if(roomNum == 0) {
-			nextRoom();
-		}
-	}
-	else if(!locked && key == PS.KEY_ARROW_UP)
+	if(!locked && key == PS.KEY_ARROW_UP)
 	{
 		playerY = playerY - 1;
 
@@ -276,21 +264,35 @@ function nextRoom() {
 
 	if(roomNum == 1) {
 		gridX = 6;
-		gridY = 32;
+		gridY = 24;
 		PS.gridSize(gridX, gridY);
 		PS.gridColor(PS.COLOR_GRAY_DARK);
 		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
 		PS.border(PS.ALL, PS.ALL, 0);
 
+		player = PS.spriteSolid(2, 2);
+		PS.spritePlane(player, 2);
+		PS.spriteCollide(player, playerCollision);
+
 		playerX = 2;
-		playerY = 29;
+		playerY = 21;
 		PS.spriteMove(player, playerX, playerY);
+		locked = false;
 		PS.statusColor(PS.COLOR_WHITE);
-		PS.statusText("(Arrows keys to move)");
+
+		if(replay) {
+			PS.statusText("(But it was all a dream)");
+		}
+		else {
+			PS.statusText("(Arrows keys to move)");
+		}
+
+		dialogueLine = 0;
+		spellbook = false;
 	}
 	else if(roomNum == 2) {
 		playerX = 2;
-		playerY = 30;
+		playerY = 22;
 		PS.spriteMove(player, playerX, playerY);
 
 		tempSprite = PS.spriteSolid(2, 2);
@@ -301,7 +303,7 @@ function nextRoom() {
 	}
 	else if(roomNum == 3) {
 		playerX = 2;
-		playerY = 30;
+		playerY = 22;
 		PS.spriteMove(player, playerX, playerY);
 
 		PS.color(1, 0, PS.COLOR_RED);
@@ -311,7 +313,7 @@ function nextRoom() {
 	}
 	else if(roomNum == 4) {
 		playerX = 2;
-		playerY = 30;
+		playerY = 22;
 		PS.spriteMove(player, playerX, playerY);
 
 		PS.color(4, 0, PS.COLOR_RED);
@@ -322,12 +324,10 @@ function nextRoom() {
 		PS.color(3, 12, PS.COLOR_RED);
 		PS.color(2, 17, PS.COLOR_RED);
 		PS.color(2, 18, PS.COLOR_RED);
-		PS.color(2, 25, PS.COLOR_RED);
-		PS.color(2, 26, PS.COLOR_RED);
 	}
 	else if(roomNum == 5) {
 		playerX = 2;
-		playerY = 30;
+		playerY = 22;
 		PS.spriteMove(player, playerX, playerY);
 
 		PS.color(2, 0, PS.COLOR_RED);
@@ -349,7 +349,6 @@ function nextRoom() {
 		PS.color(3, 21, PS.COLOR_RED);
 		PS.color(3, 22, PS.COLOR_RED);
 		PS.color(3, 23, PS.COLOR_RED);
-		PS.color(2, 27, PS.COLOR_RED);
 	}
 	else if(roomNum == 6) {
 		gridX = 8;
@@ -389,14 +388,14 @@ function nextRoom() {
 	}
 	else if(roomNum == 8) {
 		gridX = 6;
-		gridY = 32;
+		gridY = 24;
 		PS.gridSize(gridX, gridY);
 		PS.gridColor(PS.COLOR_GRAY_DARK);
 		PS.color(PS.ALL, PS.ALL, PS.COLOR_GRAY);
 		PS.border(PS.ALL, PS.ALL, 0);
 
 		playerX = 2;
-		playerY = 29;
+		playerY = 21;
 		PS.spriteMove(player, playerX, playerY);
 
 		if(!spellbook) {
@@ -546,6 +545,7 @@ function nextRoom() {
 		PS.gridColor(PS.COLOR_GRAY_DARK);
 		PS.color(PS.ALL, PS.ALL, PS.COLOR_YELLOW);
 		PS.border(PS.ALL, PS.ALL, 0);
+		locked = true;
 
 		PS.statusColor(PS.COLOR_WHITE);
 		if(roomNum == 98) {
@@ -558,14 +558,18 @@ function nextRoom() {
 			PS.statusText("Thanks for playing! (Ending 3/3)");
 		}
 		PS.audioPlay("fx_tada");
+		roomNum = 199;
+		replay = true;
 	}
 }
 
 //Moves the dialogue to the next line
 function dialogueSequencer() {
 	locked = true;
-
-	if(roomNum == 2) {
+	if(roomNum == 0) {
+		nextRoom();
+	}
+	else if(roomNum == 2) {
 		PS.audioPlay("fx_click");
 		if(dialogueLine == 0) {
 			PS.statusColor(PS.COLOR_ORANGE);
@@ -728,6 +732,7 @@ function dialogueSequencer() {
 			PS.statusText("");
 			dialogueLine = 0;
 			roomNum = 99;
+			PS.spriteDelete(tempSprite);
 			nextRoom();
 		}
 		else if(dialogueLine == 7) {
@@ -797,7 +802,7 @@ function dialogueSequencer() {
 	else if(roomNum == 49) {
 		if(dialogueLine == 0) {
 			dialogueLine += 1;
-			PS.statusColor(PS.COLOR_BLUE);
+			PS.statusColor(PS.COLOR_CYAN);
 			PS.audioPlay("fx_squink");
 			PS.statusText("I am the king of this underground!");
 		}
@@ -915,6 +920,10 @@ function dialogueSequencer() {
 			nextRoom();
 		}
 	}
+	else if(roomNum == 199) {
+		roomNum = 0;
+		nextRoom();
+	}
 
 }
 
@@ -933,11 +942,11 @@ This function doesn't have to do anything. Any value returned is ignored.
 [options : Object] = A JavaScript object with optional data properties; see API documentation for details.
 */
 PS.keyUp = function( key, shift, ctrl, options ) {
-	// Uncomment the following code line to inspect first three parameters:
-
-	// PS.debug( "PS.keyUp(): key=" + key + ", shift=" + shift + ", ctrl=" + ctrl + "\n" );
-
-	// Add code here for when a key is released.
+	if(key == PS.KEY_SPACE) {
+		if(locked) {
+			dialogueSequencer();
+		}
+	}
 };
 
 
